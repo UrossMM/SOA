@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  datadb:
+    image: mongo
+
+  sensordevicemicroservice.api:
+    image: ${DOCKER_REGISTRY-}sensordevicemicroserviceapi
+    build:
+      context: .
+      dockerfile: SensorDeviceMicroservice/SensorDeviceMicroservice.API/Dockerfile
+
+  datamicroservice.api:
+    image: ${DOCKER_REGISTRY-}datamicroserviceapi
+    build:
+      context: .
+      dockerfile: DataMicroservice/DataMicroservice.API/Dockerfile
+  
+volumes:
+  mongo_data:
+  

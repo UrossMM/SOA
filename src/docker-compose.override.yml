@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  datadb:
+    container_name: datadb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  sensordevicemicroservice.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8000:80"
+
+  datamicroservice.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionString=mongodb://datadb:27017"
+    depends_on:
+      - datadb
+    ports:
+      - "8001:80"
