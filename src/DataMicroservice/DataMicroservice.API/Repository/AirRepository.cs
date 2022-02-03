@@ -35,7 +35,7 @@ namespace DataMicroservice.API.Repository
         {
             return await _dbContext
                         .AllData
-                        .Find(x => x.SiteName == siteName)
+                        .Find(x => x.Site == siteName)
                         .ToListAsync();
         }
     }

@@ -24,10 +24,10 @@ namespace SensorDeviceMicroservice.API.Controllers
                 _sensorsList.GetSensors()[0].SensorStart();
                 return Ok($"Sensor {_sensorsList.GetSensors()[0].DataToProceed.SensorType} started successfully");
             }
-            else if (_sensorsList.GetSensors()[0].DataToProceed.SensorType.ToLower() == type.ToLower())
+            else if (_sensorsList.GetSensors()[1].DataToProceed.SensorType.ToLower() == type.ToLower())
             {
                 _sensorsList.GetSensors()[1].SensorStart();
-                return Ok($"Sensor {_sensorsList.GetSensors()[0].DataToProceed.SensorType} started successfully");
+                return Ok($"Sensor {_sensorsList.GetSensors()[1].DataToProceed.SensorType} started successfully");
             }
             else return BadRequest("SensorType doesn't exist");
         }

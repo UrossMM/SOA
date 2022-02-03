@@ -38,6 +38,7 @@ namespace DataMicroservice.API.Controllers
         [HttpPost]
         public async Task<ActionResult> AddData([FromBody] Data data)
         {
+            Console.WriteLine("USAO U POST!");
             if (data == null)
                 return BadRequest();
 

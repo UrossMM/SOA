@@ -28,25 +28,16 @@ namespace SensorDeviceMicroservice.API.Services
 
         public SensorService(string sensorType)
         {
-            Threshold = DEFAULT_THRESHOLD;
-            Timeout = 2000;
-            _timer = new System.Timers.Timer(Timeout);
+            _timer = new System.Timers.Timer(4000);
             _timer.Elapsed += OnTimerEventAsync;
             DataToProceed = new Data();
             DataToProceed.SensorType = sensorType;
-            _filePath = "./Resources/air_pol_delhi.csv";
-            configureCsv();
-            IsThresholdSet = false;
+            Threshold = DEFAULT_THRESHOLD;
+            Timeout = 8000;
+           _timer.Start();
+             IsThresholdSet = false;
         }
 
-        private void configureCsv()
-        {
-            _streamReader = new StreamReader(_filePath);
-            CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
-            _csv = new CsvReader(_streamReader, config);
-            _csv.Read();
-            _csv.ReadHeader();
-        }
 
         public void SensorStop()
         {
@@ -62,15 +53,31 @@ namespace SensorDeviceMicroservice.API.Services
 
         private async void OnTimerEventAsync(object sender, ElapsedEventArgs args)
         {
+            _filePath = "./Resources/air_pol_delhi.csv";
+            _streamReader = new StreamReader(@"C:\Users\danil\OneDrive\Desktop\SOA\src\SensorDeviceMicroservice\SensorDeviceMicroservice.API\Resourcesair_pol_delhi.csv");
+            CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
+            _csv = new CsvReader(_streamReader, config);
+            _csv.Read();
+            _csv.ReadHeader();
             if (_shouldTimerWork)
             {
                 ReadValue();
+                //    DataToProceed.Id = 65465;
+
+                //    DataToProceed.City = "Bg";
+                //    DataToProceed.Site = "Site";
+                //    DataToProceed.ToDate = "21.04";
+                //    DataToProceed.FromDate = "20.07." ;
+                //    DataToProceed.SensorType = "co";
+                //    DataToProceed.Value = 330;
+
                 Console.WriteLine(DataToProceed.SensorType);
                 Console.WriteLine(DataToProceed.Value);
                 HttpClient httpClient = new HttpClient();
-                var responseMessage = await httpClient.PostAsJsonAsync("http://datamicroservice.api/api/Data/AddData", DataToProceed);
+                var responseMessage = await httpClient.PostAsJsonAsync("http://datamicroservice.api:80/api/Data/AddData", DataToProceed);
                 Console.WriteLine(responseMessage);
             }
+            Console.WriteLine("Timer TIKTOOOKKKKKKKKKKKKKKK");
 
         }
 
@@ -90,9 +97,7 @@ namespace SensorDeviceMicroservice.API.Services
                 string sensor_value;
                 string id;
                 string city;
-                string siteName;
                 string site;
-                string qName;
                 string toDate;
                 string fromDate;
 
@@ -101,9 +106,7 @@ namespace SensorDeviceMicroservice.API.Services
                     sensor_value = _csv.GetField<string>(DataToProceed.SensorType);
                     id = _csv.GetField<string>("id");
                     city = _csv.GetField<string>("city");
-                    siteName = _csv.GetField<string>("site_name");
                     site = _csv.GetField<string>("site");
-                    qName = _csv.GetField<string>("query_name");
                     toDate = _csv.GetField<string>("to_date");
                     fromDate = _csv.GetField<string>("from_date");
                 }
@@ -112,24 +115,24 @@ namespace SensorDeviceMicroservice.API.Services
                 {
                     _streamReader.DiscardBufferedData();
                     using (_csv) { }
-                    configureCsv();
+                    _streamReader = new StreamReader("./Resources/air_pol_delhi.csv");
+                    CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                    _csv = new CsvReader(_streamReader, config);
                     _csv.Read();
+                    _csv.ReadHeader();
+                    //_csv.Read();
                     sensor_value = _csv.GetField<string>(DataToProceed.SensorType);
                     id = _csv.GetField<string>("id");
                     city = _csv.GetField<string>("city");
-                    siteName = _csv.GetField<string>("site_name");
                     site = _csv.GetField<string>("site");
-                    qName = _csv.GetField<string>("query_name");
                     toDate = _csv.GetField<string>("to_date");
                     fromDate = _csv.GetField<string>("from_date");
                 }
                 DataToProceed.Id = Int32.Parse(id);
                 DataToProceed.City = city;
-                DataToProceed.SiteName = siteName;
                 DataToProceed.Site = site;
-                DataToProceed.QueryName = qName;
-                DataToProceed.ToDate = Convert.ToDateTime(toDate);
-                DataToProceed.FromDate = Convert.ToDateTime(fromDate);
+                DataToProceed.ToDate = toDate;
+                DataToProceed.FromDate = fromDate;
                 DataToProceed.Value = decimal.Parse(sensor_value, CultureInfo.InvariantCulture);
             }
             catch (IOException e)
