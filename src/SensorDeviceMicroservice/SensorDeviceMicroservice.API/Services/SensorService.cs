@@ -53,8 +53,8 @@ namespace SensorDeviceMicroservice.API.Services
 
         private async void OnTimerEventAsync(object sender, ElapsedEventArgs args)
         {
-            _filePath = "./Resources/air_pol_delhi.csv";
-            _streamReader = new StreamReader(@"C:\Users\danil\OneDrive\Desktop\SOA\src\SensorDeviceMicroservice\SensorDeviceMicroservice.API\Resourcesair_pol_delhi.csv");
+            _filePath = "/tmp/air_pol_delhi.csv";
+            _streamReader = new StreamReader(_filePath);
             CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
             _csv = new CsvReader(_streamReader, config);
             _csv.Read();
@@ -115,7 +115,7 @@ namespace SensorDeviceMicroservice.API.Services
                 {
                     _streamReader.DiscardBufferedData();
                     using (_csv) { }
-                    _streamReader = new StreamReader("./Resources/air_pol_delhi.csv");
+                    _streamReader = new StreamReader("/tmp/air_pol_delhi.csv");
                     CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
                     _csv = new CsvReader(_streamReader, config);
                     _csv.Read();

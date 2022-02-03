@@ -9,11 +9,19 @@ services:
     volumes:
       - mongo_data1:/data/db
 
+  analyticsdb:
+    container_name: analyticsdb
+    restart: always
+    ports:
+      - "6379:6379"
+
   sensordevicemicroservice.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "8000:80"
+    volumes:
+      - C:\Users\uros\Desktop\SOA\src\SensorDeviceMicroservice\SensorDeviceMicroservice.API\Resources:/tmp
 
   datamicroservice.api:
     environment:
@@ -23,3 +31,13 @@ services:
       - datadb
     ports:
       - "8001:80"
+
+  analyticsmicroservice.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings:ConnectionString=analyticsdb:6379"
+    depends_on:
+      - analyticsdb
+    ports:
+      - "8002:80"
+

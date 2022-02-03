@@ -4,6 +4,9 @@ services:
   datadb:
     image: mongo
 
+  analyticsdb:
+    image: redis:alpine
+
   sensordevicemicroservice.api:
     image: ${DOCKER_REGISTRY-}sensordevicemicroserviceapi
     build:
@@ -16,6 +19,13 @@ services:
       context: .
       dockerfile: DataMicroservice/DataMicroservice.API/Dockerfile
   
+  analyticsmicroservice.api:
+    image: ${DOCKER_REGISTRY-}analyticsmicroserviceapi
+    build:
+      context: .
+      dockerfile: AnalyticsMicroservice/AnalyticsMicroservice.API/Dockerfile
+
 volumes:
   mongo_data1:
   
+
