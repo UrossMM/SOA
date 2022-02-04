@@ -10,8 +10,12 @@
         {
             _sensors = new List<SensorService>()
             {
+                new SensorService("pm25"),
+                new SensorService("pm10"),
+                new SensorService("SO2"),
                 new SensorService("CO"),
                 new SensorService("Ozone")
+
             };
         }
 

@@ -1,4 +1,4 @@
-﻿using CsvHelper;
+﻿ using CsvHelper;
 using CsvHelper.Configuration;
 using SensorDeviceMicroservice.API.Model;
 using System.Globalization;
@@ -18,6 +18,8 @@ namespace SensorDeviceMicroservice.API.Services
 
         public string _filePath;
 
+        public string SensorType { get; set; }
+
         private readonly System.Timers.Timer _timer;
 
         private StreamReader _streamReader;
@@ -28,14 +30,21 @@ namespace SensorDeviceMicroservice.API.Services
 
         public SensorService(string sensorType)
         {
-            _timer = new System.Timers.Timer(4000);
-            _timer.Elapsed += OnTimerEventAsync;
+            IsThresholdSet = false;
+            SensorType = sensorType;
             DataToProceed = new Data();
             DataToProceed.SensorType = sensorType;
             Threshold = DEFAULT_THRESHOLD;
-            Timeout = 8000;
-           _timer.Start();
-             IsThresholdSet = false;
+            Timeout = 10000;
+            _timer = new System.Timers.Timer(Timeout);
+            _timer.Elapsed += OnTimerEventAsync;
+            //_filePath = "./Resources/air_pol_delhi.csv";
+            _filePath = "/tmp/air_pol_delhi.csv";
+            _streamReader = new StreamReader(_filePath);
+            CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
+            _csv = new CsvReader(_streamReader, config);
+            _csv.Read();
+            _csv.ReadHeader();
         }
 
 
@@ -53,12 +62,6 @@ namespace SensorDeviceMicroservice.API.Services
 
         private async void OnTimerEventAsync(object sender, ElapsedEventArgs args)
         {
-            _filePath = "/tmp/air_pol_delhi.csv";
-            _streamReader = new StreamReader(_filePath);
-            CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
-            _csv = new CsvReader(_streamReader, config);
-            _csv.Read();
-            _csv.ReadHeader();
             if (_shouldTimerWork)
             {
                 ReadValue();
@@ -75,9 +78,8 @@ namespace SensorDeviceMicroservice.API.Services
                 Console.WriteLine(DataToProceed.Value);
                 HttpClient httpClient = new HttpClient();
                 var responseMessage = await httpClient.PostAsJsonAsync("http://datamicroservice.api:80/api/Data/AddData", DataToProceed);
-                Console.WriteLine(responseMessage);
+                //Console.WriteLine(responseMessage);
             }
-            Console.WriteLine("Timer TIKTOOOKKKKKKKKKKKKKKK");
 
         }
 
@@ -115,12 +117,11 @@ namespace SensorDeviceMicroservice.API.Services
                 {
                     _streamReader.DiscardBufferedData();
                     using (_csv) { }
-                    _streamReader = new StreamReader("/tmp/air_pol_delhi.csv");
+                    _streamReader = new StreamReader(_filePath);
                     CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
                     _csv = new CsvReader(_streamReader, config);
                     _csv.Read();
                     _csv.ReadHeader();
-                    //_csv.Read();
                     sensor_value = _csv.GetField<string>(DataToProceed.SensorType);
                     id = _csv.GetField<string>("id");
                     city = _csv.GetField<string>("city");
