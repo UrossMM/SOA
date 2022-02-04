@@ -1,5 +1,5 @@
 ﻿using AnalyticsMicroservice.API.Entities;
-using Microsoft.Extensions.Caching.Distributed;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 //using ce faliti za rabbit
@@ -7,31 +7,38 @@ namespace AnalyticsMicroservice.API.Repository
 {
     public class AnalyticsRepository: IAnalyticsRepository
     {
-        private readonly IDistributedCache _redisCache;
 
-        public AnalyticsRepository(IDistributedCache redisCache)
+        private readonly IMongoClient _client;
+        public AnalyticsRepository(IMongoClient client)
         {
-            _redisCache = redisCache;
+            _client = client;
         }
 
-        public async Task<DataAnalytics> GetAnalyticsData(int id)
+        public async Task WriteToMongo(DataAnalytics data)
         {
-            var aData = await _redisCache.GetStringAsync(id.ToString());
+            //await _dbContext.AllData.InsertOneAsync(data);
 
-            if (String.IsNullOrEmpty(aData))
-                return null;
+            var db = _client.GetDatabase("Analytics");
+            var collection = db.GetCollection<DataAnalytics>("Data-Analytics");
 
-            return JsonConvert.DeserializeObject<DataAnalytics>(aData);
+            collection.InsertOne(data);
         }
 
-        public async Task WriteToRedis(DataAnalytics data)
-        {
-            await _redisCache.SetStringAsync(data.Id.ToString(), JsonConvert.SerializeObject(data));
-        }
+        //public async Task RemoveAllData()
+        //{
+        //    await _dbContext.AllData.DeleteManyAsync(p => true);
+        //}
 
-        public async Task DeleteData(int id)
+        public async Task<IEnumerable<DataAnalytics>> GetDataById(int id)
         {
-            await _redisCache.RemoveAsync(id.ToString());
+            /*return await _dbContext
+                        .AllData
+                        .Find(x => x.Id == id)
+                        .ToListAsync();*/
+            var db = _client.GetDatabase("Analytics");
+            var collection = db.GetCollection<DataAnalytics>("Data-Analytics");
+
+            return await collection.Find(x=> x.Id==id).ToListAsync();
         }
     }
 }

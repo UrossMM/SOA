@@ -9,11 +9,26 @@ services:
     volumes:
       - mongo_data1:/data/db
 
-  analyticsdb:
-    container_name: analyticsdb
+  analyticsmongo:
+    container_name: analyticsmongo
+    restart: always
+    ports: 
+      - "27016:27017"
+    volumes:
+      - mongo_data2:/data/db
+
+  rabbitmq:
+    container_name: rabbitmq
+    tty: true
+    hostname: rabbitmq
     restart: always
     ports:
-      - "6379:6379"
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "25672:25672"
+      - "15671:15671"
+      - "15672:15672"
 
   sensordevicemicroservice.api:
     environment:
@@ -29,15 +44,16 @@ services:
       - "DatabaseSettings:ConnectionString=mongodb://datadb:27017"
     depends_on:
       - datadb
+      - rabbitmq
     ports:
       - "8001:80"
 
   analyticsmicroservice.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "CacheSettings:ConnectionString=analyticsdb:6379"
     depends_on:
-      - analyticsdb
+      - analyticsmongo
+      - rabbitmq
     ports:
       - "8002:80"
 

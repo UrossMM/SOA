@@ -4,7 +4,7 @@ namespace AnalyticsMicroservice.API.Repository
 {
     public interface IAnalyticsRepository
     {
-        Task WriteToRedis(DataAnalytics data);
-        Task<DataAnalytics> GetAnalyticsData(int id);
+        Task WriteToMongo(DataAnalytics data);
+        Task<IEnumerable<DataAnalytics>> GetDataById(int id);
     }
 }

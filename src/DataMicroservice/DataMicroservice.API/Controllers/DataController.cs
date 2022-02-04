@@ -1,6 +1,7 @@
 ﻿using DataMicroservice.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 using DataMicroservice.API.Entities;
+using DataMicroservice.API.Rabbit;
 //dodati neke usinge
 namespace DataMicroservice.API.Controllers
 {
@@ -10,12 +11,11 @@ namespace DataMicroservice.API.Controllers
     public class DataController : ControllerBase
     {
         private readonly IAirRepository _repository;
-        //private readonly Mqtt _mqtt;
-
+        private readonly Publisher _mqtt;
 
         public DataController(IAirRepository repository)
         {
-            //_mqtt = new Mqtt();
+            _mqtt = new Publisher();
             _repository = repository;
             //HttpClient httpClient = new HttpClient();
             //httpClient.PostAsync();
@@ -44,7 +44,7 @@ namespace DataMicroservice.API.Controllers
 
             await _repository.AddData(data);
 
-            //_mqtt.Publish(data, "sensor/data");
+            _mqtt.Publish(data, "sensor/data");
 
             return Ok();
         }

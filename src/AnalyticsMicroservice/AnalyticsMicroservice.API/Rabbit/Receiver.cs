@@ -10,23 +10,43 @@ namespace AnalyticsMicroservice.API.Rabbit
 {
     public class Receiver
     {
+        private const int V = 60;
         private ConnectionFactory factory;
         private IModel channel;
         private IConnection connection;
         private DataAnalyser _da;
 
-        public Receiver(IDistributedCache redis)
+        public Receiver()
         {
-            _da = new DataAnalyser(redis);
+            _da = new DataAnalyser();
+
+            /*factory = new ConnectionFactory();
+            factory.UserName = "user";
+            factory.Password = "password";
+            factory.VirtualHost = "/";
+            //factory.Protocol = Protocols.FromEnvironment();
+            factory.HostName = "rabbitmq";
+            factory.Port = 5672;
+            connection = factory.CreateConnection();*/
+
             factory = new ConnectionFactory()
             {
-                HostName = "rabbitmq",
-                Port = 5672,
+                //HostName = "rabbitmq",
+                HostName = "192.168.99.100:15672",
+                Port = AmqpTcpEndpoint.UseDefaultPort,
                 UserName = "guest",
-                Password = "guest"
+                Password = "guest",
+                VirtualHost = "/",
+                DispatchConsumersAsync = false
             };
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
+            var endpoints = new System.Collections.Generic.List<AmqpTcpEndpoint> {
+                      new AmqpTcpEndpoint("hostname"),
+                      new AmqpTcpEndpoint("rabbitmq")
+                };
+            if (connection == null)
+                connection = factory.CreateConnection(endpoints);
+            if (channel == null)
+                channel = connection.CreateModel();
         }
 
         public void Subscribe(string qName)

@@ -1,4 +1,6 @@
+using AnalyticsMicroservice.API.Rabbit;
 using AnalyticsMicroservice.API.Repository;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +12,23 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    });
+});
+
+var connectionString = "mongodb://analyticsmongo:27017";
+var client = new MongoClient(connectionString);
+builder.Services.AddSingleton<IMongoClient>(client);
 builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 
-builder.Services.AddStackExchangeRedisCache(options =>
+/*builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
-});
+});*/
 
 var app = builder.Build();
 
@@ -29,5 +42,8 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+Receiver r = new Receiver();
+r.Subscribe("sensor/data");
 
 app.Run();

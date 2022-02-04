@@ -1,22 +1,25 @@
 ﻿using AnalyticsMicroservice.API.Entities;
+using AnalyticsMicroservice.API.Rabbit;
 using AnalyticsMicroservice.API.Repository;
 using Microsoft.Extensions.Caching.Distributed;
+using MongoDB.Driver;
 
 namespace AnalyticsMicroservice.API.Analyser
 {
     public class DataAnalyser
     {
         private IAnalyticsRepository _repository;
+        private IMongoClient mongo;
         //private IDistributedCache _redis = new ;
         //u receiver konstruktor primas isto IDistributedCache i u konstruktoru ga postavljas, kad pravis DataAnalyser prosledis mu taj objekat
         // a DataAnalyser ce da ga prosledi kroz svoj konstruktor repozitorijumu
-        public DataAnalyser(IDistributedCache redis)
+        public DataAnalyser()
         {
-
-            _repository = new AnalyticsRepository(redis);
+            mongo = new MongoClient("mongodb://analyticsmongo:27017");
+            _repository = new AnalyticsRepository(mongo);
         }
 
-        public DataAnalytics AnalyzeData(Data data)
+        public async Task AnalyzeData(Data data)
         {
             DataAnalytics dA = new DataAnalytics();
 
@@ -61,8 +64,9 @@ namespace AnalyticsMicroservice.API.Analyser
             dA.Id = data.Id;
             dA.Value = data.Value;
 
-            return dA;
-
+            var pub = new Publisher();
+            pub.Publish(dA, "sensor/analytics");
+            await _repository.WriteToMongo(dA);
         }
     }
 }

@@ -18,14 +18,14 @@ namespace AnalyticsMicroservice.API.Controllers
             [HttpPost]
             public async Task<ActionResult> WriteToRedis([FromBody] DataAnalytics dA)
             {
-                await _repository.WriteToRedis(dA);
+                await _repository.WriteToMongo(dA);
                 return Ok();
             }
 
             [HttpGet("{id}")]
             public async Task<ActionResult<DataAnalytics>> GetAnalyticsData(int id)
             {
-                var data = await _repository.GetAnalyticsData(id);
+                var data = await _repository.GetDataById(id);
                 return Ok(data);
             }
         }

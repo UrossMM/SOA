@@ -4,8 +4,12 @@ services:
   datadb:
     image: mongo
 
-  analyticsdb:
-    image: redis:alpine
+  analyticsmongo:
+    image: mongo
+
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
 
   sensordevicemicroservice.api:
     image: ${DOCKER_REGISTRY-}sensordevicemicroserviceapi
@@ -27,5 +31,6 @@ services:
 
 volumes:
   mongo_data1:
+  mongo_data2:
   
 
