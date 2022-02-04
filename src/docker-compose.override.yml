@@ -21,7 +21,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - C:\Users\uros\Desktop\SOA\src\SensorDeviceMicroservice\SensorDeviceMicroservice.API\Resources:/tmp
+      - C:\Users\danil\OneDrive\Desktop\SOA\src\SensorDeviceMicroservice\SensorDeviceMicroservice.API\Resources:/tmp
 
   datamicroservice.api:
     environment:

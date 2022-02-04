@@ -19,29 +19,32 @@ namespace SensorDeviceMicroservice.API.Controllers
         [HttpPost]
         public IActionResult StartSensor([Required, FromBody] string type)
         {
-            if (_sensorsList.GetSensors()[0].DataToProceed.SensorType.ToLower() == type.ToLower())
+            foreach (SensorService sensor in _sensorsList.GetSensors())
             {
-                _sensorsList.GetSensors()[0].SensorStart();
-                return Ok($"Sensor {_sensorsList.GetSensors()[0].DataToProceed.SensorType} started successfully");
+                if (type.ToLower() == sensor.SensorType.ToLower())
+                {
+                    sensor.SensorStart();
+                    return Ok($"Sensor {sensor.SensorType} started successfully");
+                }
             }
-            else if (_sensorsList.GetSensors()[1].DataToProceed.SensorType.ToLower() == type.ToLower())
-            {
-                _sensorsList.GetSensors()[1].SensorStart();
-                return Ok($"Sensor {_sensorsList.GetSensors()[1].DataToProceed.SensorType} started successfully");
-            }
-            else return BadRequest("SensorType doesn't exist");
+
+            return BadRequest("SensorType doesn't exist");
         }
 
         [HttpPost]
         public IActionResult StopSensor([Required, FromBody] string type)
         {
-            if (type.ToLower() == "CO".ToLower())
+            foreach (SensorService sensor in _sensorsList.GetSensors())
             {
-                _sensorsList.GetSensors()[0].SensorStop();
-                return Ok("CO: turned off");
+                if (type.ToLower() == sensor.SensorType.ToLower())
+                {
+                    sensor.SensorStop();
+                    return Ok($"Sensor {sensor.SensorType} stop successfully");
+                }
             }
-            _sensorsList.GetSensors()[1].SensorStop();
-            return Ok("Ozone: turned off");
+
+            return BadRequest("SensorType doesn't exist");
+
         }
 
         [HttpGet]
@@ -104,15 +107,8 @@ namespace SensorDeviceMicroservice.API.Controllers
                     sensor.IsThresholdSet = false;
                     if (value != null)
                     {
-                        if (type.ToLower() == "Co".ToLower())
-                        {
-                            _sensorsList.GetSensors()[0].SetTimeout((double)value);
-                        }
-                        else
-                        {
-                            _sensorsList.GetSensors()[1].SetTimeout((double)value);
-                        }
-
+                        sensor.SetTimeout((double)value);
+                      
                         return Ok($"Timeout based measuring started for {type} sensor. New Timeout value set: {value}");
                     }
                     else
@@ -155,14 +151,9 @@ namespace SensorDeviceMicroservice.API.Controllers
                     sensor.IsThresholdSet = true;
                     if (value != null)
                     {
-                        if (type.ToLower() == "Co".ToLower())
-                        {
-                            _sensorsList.GetSensors()[0].Threshold = (float)value;
-                        }
-                        else
-                        {
-                            _sensorsList.GetSensors()[1].Threshold = (float)value;
-                        }
+
+                        sensor.Threshold = (float)value;
+
                         return Ok($"Threshold based measuring started for {type} sensor. New Threshold value set {value}");
                     }
                     else
