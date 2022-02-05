@@ -1,7 +1,3 @@
-using DataMicroservice.API.Context;
-using DataMicroservice.API.Repository;
-using DataMicroservice.API.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,14 +6,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<IDataContext, DataContext>();
-builder.Services.AddScoped<IAirRepository, AirRepository>();
-
-Hivemq mqtt = new Hivemq();
-builder.Services.AddSingleton(mqtt);
-builder.Services.AddSingleton(new DataService(mqtt));
-
 
 var app = builder.Build();
 

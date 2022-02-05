@@ -1,5 +1,6 @@
 ﻿using DataMicroservice.API.Context;
 using DataMicroservice.API.Entities;
+using DataMicroservice.API.Services;
 using MongoDB.Driver;
 
 namespace DataMicroservice.API.Repository
@@ -7,15 +8,18 @@ namespace DataMicroservice.API.Repository
     public class AirRepository : IAirRepository
     {
         private readonly IDataContext _dbContext;
+        private readonly DataService _service;
 
-        public AirRepository(IDataContext dbContext)
+        public AirRepository(IDataContext dbContext, DataService serv)
         {
             _dbContext = dbContext;
+            _service = serv;
         }
 
         public async Task AddData(Data data)
         {
             await _dbContext.AllData.InsertOneAsync(data);
+            _service.PublishOnTopic(data, "sensor/data");
         }
 
         public async Task<IEnumerable<Data>> GetAllData()

@@ -1,5 +1,6 @@
-using AnalyticsMicroservice.API.Rabbit;
+using AnalyticsMicroservice.API.Analyser;
 using AnalyticsMicroservice.API.Repository;
+using AnalyticsMicroservice.Services;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,11 @@ var connectionString = "mongodb://analyticsmongo:27017";
 var client = new MongoClient(connectionString);
 builder.Services.AddSingleton<IMongoClient>(client);
 builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+Hivemq mqtt = new Hivemq();
+builder.Services.AddSingleton(mqtt);
+builder.Services.AddSingleton(new DataAnalyser(mqtt));
+
+
 
 /*builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -43,7 +49,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-Receiver r = new Receiver();
-r.Subscribe("sensor/data");
+
 
 app.Run();

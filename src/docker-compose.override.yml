@@ -17,18 +17,11 @@ services:
     volumes:
       - mongo_data2:/data/db
 
-  rabbitmq:
-    container_name: rabbitmq
-    tty: true
-    hostname: rabbitmq
-    restart: always
+  hivemq:
+    container_name: hivemq
     ports:
-      - "4369:4369"
-      - "5671:5671"
-      - "5672:5672"
-      - "25672:25672"
-      - "15671:15671"
-      - "15672:15672"
+     - "8080:8080"
+     - "1883:1883"
 
   sensordevicemicroservice.api:
     environment:
@@ -44,7 +37,7 @@ services:
       - "DatabaseSettings:ConnectionString=mongodb://datadb:27017"
     depends_on:
       - datadb
-      - rabbitmq
+      - hivemq
     ports:
       - "8001:80"
 
@@ -53,7 +46,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - analyticsmongo
-      - rabbitmq
+      - hivemq
     ports:
       - "8002:80"
 

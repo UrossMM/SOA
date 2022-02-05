@@ -1,8 +1,9 @@
 ﻿using AnalyticsMicroservice.API.Entities;
-using AnalyticsMicroservice.API.Rabbit;
 using AnalyticsMicroservice.API.Repository;
-using Microsoft.Extensions.Caching.Distributed;
+using AnalyticsMicroservice.Services;
 using MongoDB.Driver;
+using MQTTnet;
+using System.Text;
 
 namespace AnalyticsMicroservice.API.Analyser
 {
@@ -10,15 +11,59 @@ namespace AnalyticsMicroservice.API.Analyser
     {
         private IAnalyticsRepository _repository;
         private IMongoClient mongo;
-        //private IDistributedCache _redis = new ;
-        //u receiver konstruktor primas isto IDistributedCache i u konstruktoru ga postavljas, kad pravis DataAnalyser prosledis mu taj objekat
-        // a DataAnalyser ce da ga prosledi kroz svoj konstruktor repozitorijumu
-        public DataAnalyser()
+        private Hivemq _mqttService;
+        private event EventHandler ServiceCreated;
+
+        public DataAnalyser(Hivemq mqttService)
         {
             mongo = new MongoClient("mongodb://analyticsmongo:27017");
             _repository = new AnalyticsRepository(mongo);
+            _mqttService = mqttService;
+            ServiceCreated += OnServiceCreated;
+            ServiceCreated?.Invoke(this, EventArgs.Empty);
+
+        }
+        private async void OnServiceCreated(object sender, EventArgs args)
+        {
+            Console.WriteLine("ONSERVICECREATTED");
+            while (!_mqttService.IsConnected())
+            {
+                await _mqttService.Connect();
+            }
+            if (_mqttService.IsConnected())
+            {
+                Console.WriteLine("Zovem ONDATAReceived");
+
+                await _mqttService.Subscribe("sensor/data", OnDataReceived);
+            }
+        }
+        private async void OnDataReceived(MqttApplicationMessageReceivedEventArgs arg)
+        {
+            try
+            {
+                Console.WriteLine("Uso u ONDATAReceived");
+
+                var bds = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
+                var des = System.Text.Json.JsonSerializer.Deserialize<Data>(bds);
+                Console.WriteLine(des.SensorType);
+
+                await AnalyzeData(des);
+                //HttpClient httpClient = new HttpClient();
+                //var responseMessage = await httpClient.PostAsJsonAsync<SensorTimestamp>("http://192.168.100.22:8006/AnalyticsMicroservice", des);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
+        public async void PublishOnTopic(object data, string topic)
+        {
+            if (_mqttService.IsConnected())
+            {
+                await _mqttService.Publish(data, topic);
+            }
+        }
         public async Task AnalyzeData(Data data)
         {
             DataAnalytics dA = new DataAnalytics();
@@ -63,10 +108,11 @@ namespace AnalyticsMicroservice.API.Analyser
             dA.SensorType = data.SensorType;
             dA.Id = data.Id;
             dA.Value = data.Value;
+            Console.WriteLine("Analiza obavljena");
 
-            var pub = new Publisher();
-            pub.Publish(dA, "sensor/analytics");
+            PublishOnTopic(dA, "sensor/analytics");
             await _repository.WriteToMongo(dA);
+
         }
     }
 }

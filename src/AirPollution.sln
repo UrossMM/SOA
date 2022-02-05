@@ -17,7 +17,11 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AnalyticsMicroservice", "AnalyticsMicroservice", "{769FE3A5-CF04-4861-A8E8-E5622584EABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyticsMicroservice.API", "AnalyticsMicroservice\AnalyticsMicroservice.API\AnalyticsMicroservice.API.csproj", "{E5963B3D-0719-4ADD-B689-FA2556B3CD20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalyticsMicroservice.API", "AnalyticsMicroservice\AnalyticsMicroservice.API\AnalyticsMicroservice.API.csproj", "{E5963B3D-0719-4ADD-B689-FA2556B3CD20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandMicroservice", "CommandMicroservice", "{59B5FB52-D310-4CF3-9B7E-E395486AD564}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandMicroservice.API", "CommandMicroservice\CommandMicroservice.API\CommandMicroservice.API.csproj", "{12554B11-05D8-40EF-9E74-B6495761BC8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{E5963B3D-0719-4ADD-B689-FA2556B3CD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5963B3D-0719-4ADD-B689-FA2556B3CD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5963B3D-0719-4ADD-B689-FA2556B3CD20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12554B11-05D8-40EF-9E74-B6495761BC8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12554B11-05D8-40EF-9E74-B6495761BC8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12554B11-05D8-40EF-9E74-B6495761BC8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12554B11-05D8-40EF-9E74-B6495761BC8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +60,8 @@ Global
 		{3DF303F2-8EEC-490C-8CCB-AB48E7D61733} = {E0476D63-753E-4588-877F-35EE79370CFB}
 		{769FE3A5-CF04-4861-A8E8-E5622584EABC} = {09979EEB-7385-4CD0-96D0-9154D7634A99}
 		{E5963B3D-0719-4ADD-B689-FA2556B3CD20} = {769FE3A5-CF04-4861-A8E8-E5622584EABC}
+		{59B5FB52-D310-4CF3-9B7E-E395486AD564} = {09979EEB-7385-4CD0-96D0-9154D7634A99}
+		{12554B11-05D8-40EF-9E74-B6495761BC8B} = {59B5FB52-D310-4CF3-9B7E-E395486AD564}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03A6D96B-505E-404B-A5AC-5C978DCE0C09}

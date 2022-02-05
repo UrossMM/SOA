@@ -8,8 +8,8 @@ services:
     image: mongo
 
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
+  hivemq:
+    image: hivemq/hivemq4
 
   sensordevicemicroservice.api:
     image: ${DOCKER_REGISTRY-}sensordevicemicroserviceapi

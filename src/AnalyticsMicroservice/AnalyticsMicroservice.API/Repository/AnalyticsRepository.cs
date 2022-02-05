@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 //using ce faliti za rabbit
 namespace AnalyticsMicroservice.API.Repository
 {
-    public class AnalyticsRepository: IAnalyticsRepository
+    public class AnalyticsRepository : IAnalyticsRepository
     {
 
         private readonly IMongoClient _client;
@@ -38,7 +38,15 @@ namespace AnalyticsMicroservice.API.Repository
             var db = _client.GetDatabase("Analytics");
             var collection = db.GetCollection<DataAnalytics>("Data-Analytics");
 
-            return await collection.Find(x=> x.Id==id).ToListAsync();
+            return await collection.Find(x => x.Id == id).ToListAsync();
         }
+        public async Task<IEnumerable<DataAnalytics>> GetAllData()
+        {
+            var db = _client.GetDatabase("Analytics");
+            var collection = db.GetCollection<DataAnalytics>("Data-Analytics");
+
+            return await collection.Find(x => true).ToListAsync();
+        }
+
     }
 }
