@@ -35,7 +35,7 @@ namespace SensorDeviceMicroservice.API.Services
             DataToProceed = new Data();
             DataToProceed.SensorType = sensorType;
             Threshold = DEFAULT_THRESHOLD;
-            Timeout = 10000;
+            Timeout = 3000;
             _timer = new System.Timers.Timer(Timeout);
             _timer.Elapsed += OnTimerEventAsync;
             //_filePath = "./Resources/air_pol_delhi.csv";

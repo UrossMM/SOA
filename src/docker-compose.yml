@@ -29,8 +29,15 @@ services:
       context: .
       dockerfile: AnalyticsMicroservice/AnalyticsMicroservice.API/Dockerfile
 
+  commandmicroservice.api:
+    image: ${DOCKER_REGISTRY-}commandmicroserviceapi
+    build:
+      context: .
+      dockerfile: CommandMicroservice/CommandMicroservice.API/Dockerfile
+
 volumes:
   mongo_data1:
   mongo_data2:
   
+
 

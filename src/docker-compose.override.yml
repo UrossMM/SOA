@@ -50,3 +50,12 @@ services:
     ports:
       - "8002:80"
 
+
+  commandmicroservice.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - hivemq
+    ports:
+      - "8003:80"
+

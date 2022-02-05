@@ -34,6 +34,7 @@ namespace SensorDeviceMicroservice.API.Controllers
         [HttpPost]
         public IActionResult StopSensor([Required, FromBody] string type)
         {
+            Console.WriteLine("Gasim Senzor");
             foreach (SensorService sensor in _sensorsList.GetSensors())
             {
                 if (type.ToLower() == sensor.SensorType.ToLower())

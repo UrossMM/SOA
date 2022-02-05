@@ -68,38 +68,38 @@ namespace AnalyticsMicroservice.API.Analyser
         {
             DataAnalytics dA = new DataAnalytics();
 
-            if (data.SensorType == "Pm10")
+            if (data.SensorType.ToLower() == "Pm10".ToLower())
             {
-                if (data.Value < 30)
+                if (data.Value < 500)
                     dA.Risk = "green";
-                else if (data.Value > 30 && data.Value < 100)
+                else if (data.Value > 500 && data.Value < 600)
                     dA.Risk = "yellow";
                 else
                     dA.Risk = "red";
             }
-            else if (data.SensorType == "Pm25")
+            else if (data.SensorType.ToLower() == "Pm25".ToLower())
+            {
+                if (data.Value < 200)
+                    dA.Risk = "green";
+                else if (data.Value > 200 && data.Value < 300)
+                    dA.Risk = "yellow";
+                else
+                    dA.Risk = "red";
+            }
+            else if (data.SensorType.ToLower() == "Ozone".ToLower())
             {
                 if (data.Value < 20)
                     dA.Risk = "green";
-                else if (data.Value > 20 && data.Value < 60)
+                else if (data.Value > 20 && data.Value < 35)
                     dA.Risk = "yellow";
                 else
                     dA.Risk = "red";
             }
-            else if (data.SensorType == "Ozone")
+            else if (data.SensorType.ToLower() == "SO2".ToLower())
             {
-                if (data.Value < 120)
+                if (data.Value < 20)
                     dA.Risk = "green";
-                else if (data.Value > 120 && data.Value < 240)
-                    dA.Risk = "yellow";
-                else
-                    dA.Risk = "red";
-            }
-            else if (data.SensorType == "SO2")
-            {
-                if (data.Value < 100)
-                    dA.Risk = "green";
-                else if (data.Value > 100 && data.Value < 500)
+                else if (data.Value > 20 && data.Value < 33)
                     dA.Risk = "yellow";
                 else
                     dA.Risk = "red";

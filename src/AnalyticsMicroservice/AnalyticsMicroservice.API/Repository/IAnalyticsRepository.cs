@@ -7,6 +7,7 @@ namespace AnalyticsMicroservice.API.Repository
         Task WriteToMongo(DataAnalytics data);
         Task<IEnumerable<DataAnalytics>> GetDataById(int id);
         Task<IEnumerable<DataAnalytics>> GetAllData();
+        Task DeleteAllRecords();
 
     }
 }

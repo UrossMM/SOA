@@ -48,5 +48,13 @@ namespace AnalyticsMicroservice.API.Repository
             return await collection.Find(x => true).ToListAsync();
         }
 
+        public async Task DeleteAllRecords()
+        {
+            var db = _client.GetDatabase("Analytics");
+            var collection = db.GetCollection<DataAnalytics>("Data-Analytics");
+
+            await collection.DeleteManyAsync(x => true);
+        }
+
     }
 }

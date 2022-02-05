@@ -28,6 +28,12 @@ namespace AnalyticsMicroservice.API.Controllers
                 var data = await _repository.GetDataById(id);
                 return Ok(data);
             }
-        }
+
+            [HttpDelete]
+            public async Task DeleteAllRecords()
+            {
+            await _repository.DeleteAllRecords();
+            }
+    }
     
 }
