@@ -1,5 +1,7 @@
 ﻿using CommandMicroservice.API.Entities;
+using CommandMicroservice.API.Hubs;
 using CommandMicroservice.Services;
+using Microsoft.AspNetCore.SignalR;
 using MQTTnet;
 using System.Text;
 
@@ -9,9 +11,11 @@ namespace CommandMicroservice.API.Commander
     {
         private Hivemq _mqttService;
         private event EventHandler ServiceCreated;
+        private CommandHub _hubContext;
 
-        public DataCommander(Hivemq mqttService)
+        public DataCommander(Hivemq mqttService, CommandHub hubContext)
         {
+            _hubContext = hubContext;
             _mqttService = mqttService;
             ServiceCreated += OnServiceCreated;
             ServiceCreated?.Invoke(this, EventArgs.Empty);
@@ -45,7 +49,8 @@ namespace CommandMicroservice.API.Commander
                 //Console.WriteLine(des.SensorType);
                 Console.WriteLine(des.Risk);
                 await CommandAsync(des);
-     
+                await _hubContext.Clients.All.SendAsync("ReceivedMsg", "Izvrsena komanda");
+
             }
             catch (Exception e)
             {

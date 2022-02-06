@@ -1,4 +1,5 @@
 using CommandMicroservice.API.Commander;
+using CommandMicroservice.API.Hubs;
 using CommandMicroservice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +11,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    });
+});
+
+builder.Services.AddSignalR(options => options.EnableDetailedErrors = true);
+
 Hivemq mqtt = new Hivemq();
+CommandHub hub = new CommandHub();
 builder.Services.AddSingleton(mqtt);
-builder.Services.AddSingleton(new DataCommander(mqtt));
+builder.Services.AddSingleton(new DataCommander(mqtt, hub));
 
 var app = builder.Build();
 
@@ -23,8 +35,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<CommandHub>("/commandhub");
 
 app.Run();
