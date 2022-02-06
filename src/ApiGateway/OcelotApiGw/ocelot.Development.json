@@ -1,0 +1,47 @@
+{
+  "Routes": [
+    //SensorDeviceMicroservice.APi
+
+
+    //DataMicroservice.API
+    {
+      "DownstreamPathTemplate": "/api/Data/GetAllData",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "datamicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Data",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Data/GetDataBySiteName/{siteName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "datamicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Data/GetDataBySiteName/{siteName}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Data/AddData",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "datamicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Data/AddData",
+      "UpstreamHttpMethod": [ "POST" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5035"
+  }
+}

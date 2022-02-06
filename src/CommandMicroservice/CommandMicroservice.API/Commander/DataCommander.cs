@@ -64,7 +64,7 @@ namespace CommandMicroservice.API.Commander
             Console.WriteLine("USO SAM U CommandAsync");
 
             if (receivedObject.SensorType.ToLower() == "Pm10".ToLower())
-            {
+            { 
                 if (receivedObject.Risk == "green")
                 {
                     Console.WriteLine("GREEN-ZOVE SENSOR");

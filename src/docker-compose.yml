@@ -35,9 +35,16 @@ services:
       context: .
       dockerfile: CommandMicroservice/CommandMicroservice.API/Dockerfile
 
+  ocelotapigw:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: ApiGateway/OcelotApiGw/Dockerfile
+
 volumes:
   mongo_data1:
   mongo_data2:
   
+
 
 
