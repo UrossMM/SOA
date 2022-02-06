@@ -27,23 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGw", "ApiGateway\OcelotApiGw\OcelotApiGw.csproj", "{1000EDE4-3C62-491A-81EF-3A42DFA7BF31}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dashboard", "Dashboard", "{3D7A782C-2C8F-4F3B-AF9D-89B6BC811FD7}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\dataCharts.js = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\dataCharts.js
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\index.css = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\index.css
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\index.html = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\index.html
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\index.js = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\index.js
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\libman.json = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\libman.json
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\notificationsData.js = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\notificationsData.js
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{0C423AED-B7AD-4B23-8F0C-86EEDAFB1172}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{BDE7546C-4E24-4624-98CF-EE7C2F4F7055}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\mixy\SOA\SolarRadiationIOT\Dashboard\wwwroot\js\chat.js = ..\..\mixy\SOA\SolarRadiationIOT\Dashboard\wwwroot\js\chat.js
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,8 +71,6 @@ Global
 		{59B5FB52-D310-4CF3-9B7E-E395486AD564} = {09979EEB-7385-4CD0-96D0-9154D7634A99}
 		{12554B11-05D8-40EF-9E74-B6495761BC8B} = {59B5FB52-D310-4CF3-9B7E-E395486AD564}
 		{1000EDE4-3C62-491A-81EF-3A42DFA7BF31} = {C9727487-B5C5-45ED-8BD2-F1A0E9678DFD}
-		{0C423AED-B7AD-4B23-8F0C-86EEDAFB1172} = {3D7A782C-2C8F-4F3B-AF9D-89B6BC811FD7}
-		{BDE7546C-4E24-4624-98CF-EE7C2F4F7055} = {0C423AED-B7AD-4B23-8F0C-86EEDAFB1172}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03A6D96B-505E-404B-A5AC-5C978DCE0C09}

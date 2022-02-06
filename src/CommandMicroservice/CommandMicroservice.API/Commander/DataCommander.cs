@@ -49,7 +49,6 @@ namespace CommandMicroservice.API.Commander
                 //Console.WriteLine(des.SensorType);
                 Console.WriteLine(des.Risk);
                 await CommandAsync(des);
-                await _hubContext.Clients.All.SendAsync("ReceivedMsg", des.Risk);
 
             }
             catch (Exception e)
@@ -73,6 +72,8 @@ namespace CommandMicroservice.API.Commander
 
                     var responseMessage = await httpClient.PostAsJsonAsync("http://sensordevicemicroservice.api:80/api/SensorDevice/StopSensor", receivedObject.SensorType);
                     Console.WriteLine("POZVAN SENZOR");
+
+                    await _hubContext.Clients.All.SendAsync("ReceivedMsg", receivedObject.Risk);
 
                     Console.WriteLine(responseMessage);
                 }

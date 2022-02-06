@@ -18,6 +18,14 @@ Hivemq mqtt = new Hivemq();
 builder.Services.AddSingleton(mqtt);
 builder.Services.AddSingleton(new DataService(mqtt));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -27,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseAuthorization();
 
