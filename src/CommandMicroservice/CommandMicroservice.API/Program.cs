@@ -39,8 +39,15 @@ app.UseCors();
 
 app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
 
-app.MapHub<CommandHub>("/commandhub");
+//app.MapHub<CommandHub>("/commandhub");
+
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<CommandHub>("/commandhub");
+});
 
 app.Run();

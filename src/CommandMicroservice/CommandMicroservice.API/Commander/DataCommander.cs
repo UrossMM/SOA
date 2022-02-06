@@ -49,7 +49,7 @@ namespace CommandMicroservice.API.Commander
                 //Console.WriteLine(des.SensorType);
                 Console.WriteLine(des.Risk);
                 await CommandAsync(des);
-                await _hubContext.Clients.All.SendAsync("ReceivedMsg", "Izvrsena komanda");
+                await _hubContext.Clients.All.SendAsync("ReceivedMsg", des.Risk);
 
             }
             catch (Exception e)
