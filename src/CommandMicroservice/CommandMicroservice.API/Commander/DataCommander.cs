@@ -70,10 +70,10 @@ namespace CommandMicroservice.API.Commander
 
                     HttpClient httpClient = new HttpClient();
 
+                    await _hubContext.SendWarning($"Sensor: {receivedObject.SensorType} has {receivedObject.Risk} zone!");
+
                     var responseMessage = await httpClient.PostAsJsonAsync("http://sensordevicemicroservice.api:80/api/SensorDevice/StopSensor", receivedObject.SensorType);
                     Console.WriteLine("POZVAN SENZOR");
-
-                    await _hubContext.Clients.All.SendAsync("ReceivedMsg", receivedObject.Risk);
 
                     Console.WriteLine(responseMessage);
                 }

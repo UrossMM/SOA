@@ -1,7 +1,30 @@
 {
   "Routes": [
     //SensorDeviceMicroservice.APi
-
+    {
+      "DownstreamPathTemplate": "/api/SensorDevice/StartSensor",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sensordevicemicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/StartSensor",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/SensorDevice/StopSensor",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "sensordevicemicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/StopSensor",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
 
     //DataMicroservice.API
     {
@@ -39,6 +62,18 @@
       ],
       "UpstreamPathTemplate": "/Data/AddData",
       "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Data/RemoveAllData",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "datamicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Data/RemoveAllData",
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {

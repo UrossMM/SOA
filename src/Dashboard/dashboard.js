@@ -50,7 +50,7 @@ export class Dashboard
         input1.className = "deleteAllInput";
         div1.appendChild(input1);
         input1.onclick = function(){
-            fetch('https://localhost:1025/api/Gateway/RemoveAllData', {
+            fetch('https://localhost:8010/Data/RemoveAllData', {
                 method: 'DELETE',
                 })
                 .then(res => res.text())

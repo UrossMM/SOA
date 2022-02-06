@@ -19,10 +19,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddSignalR(options => options.EnableDetailedErrors = true);
 
 Hivemq mqtt = new Hivemq();
 CommandHub hub = new CommandHub();
+builder.Services.AddSingleton<CommandHub>(hub);
+builder.Services.AddSignalR();
 builder.Services.AddSingleton(mqtt);
 builder.Services.AddSingleton(new DataCommander(mqtt, hub));
 
