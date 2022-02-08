@@ -15,11 +15,14 @@ export class Data{
             var div = document.createElement("div");
             div.className = className;
             div.textContent = textContent;
+            div.style.textAlign = "center"
             parentDiv.appendChild(div);
         }
 
         this.container = document.createElement("div");
         this.container.className = "parameterDiv" + this.id;
+        this.container.style.borderBottom = "solid black"
+        this.container.style.marginBottom = "20px"
         parent.appendChild(this.container);
 
         createDiv(this.container, "parameterField", "Sensor Type: " + this.type);

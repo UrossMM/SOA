@@ -73,7 +73,7 @@
         }
       ],
       "UpstreamPathTemplate": "/Data/RemoveAllData",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "DELETE" ]
     }
   ],
   "GlobalConfiguration": {
