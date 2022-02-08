@@ -104,6 +104,15 @@ namespace AnalyticsMicroservice.API.Analyser
                 else
                     dA.Risk = "red";
             }
+            else if (data.SensorType.ToLower() == "CO".ToLower())
+            {
+                if (data.Value < 2)
+                    dA.Risk = "green";
+                else if (data.Value > 2 && data.Value < 4)
+                    dA.Risk = "yellow";
+                else
+                    dA.Risk = "red";
+            }
 
             dA.SensorType = data.SensorType;
             dA.Id = data.Id;

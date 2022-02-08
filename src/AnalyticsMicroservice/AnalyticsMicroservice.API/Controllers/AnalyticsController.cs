@@ -16,7 +16,7 @@ namespace AnalyticsMicroservice.API.Controllers
             }
 
             [HttpPost]
-            public async Task<ActionResult> WriteToRedis([FromBody] DataAnalytics dA)
+            public async Task<ActionResult> WriteToMongo([FromBody] DataAnalytics dA)
             {
                 await _repository.WriteToMongo(dA);
                 return Ok();

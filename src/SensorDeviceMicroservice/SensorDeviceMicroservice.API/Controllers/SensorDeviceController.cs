@@ -88,7 +88,7 @@ namespace SensorDeviceMicroservice.API.Controllers
 
                     string timeoutInfo = JsonSerializer.Serialize(new
                     {
-                        isTimeout = !sensor.IsThresholdSet,
+                        isTimeout = !sensor.IsThresholdSet, // zar ne treba Timeout?
                         value = sensor.Timeout
                     }, options);
 
@@ -98,8 +98,8 @@ namespace SensorDeviceMicroservice.API.Controllers
             return BadRequest("Sensor doesn't exist");
         }
 
-        [HttpPost]
-        public IActionResult SetTimeout([Required, FromBody] string type, [Required] double? value)
+        [HttpPost("{value}")]
+        public IActionResult SetTimeout([Required, FromBody] string type, double value)
         {
             foreach (var sensor in _sensorsList.GetSensors())
             {
@@ -153,7 +153,7 @@ namespace SensorDeviceMicroservice.API.Controllers
                     if (value != null)
                     {
 
-                        sensor.Threshold = (float)value;
+                        sensor.Threshold = (decimal)value;
 
                         return Ok($"Threshold based measuring started for {type} sensor. New Threshold value set {value}");
                     }

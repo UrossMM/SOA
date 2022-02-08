@@ -8,15 +8,15 @@ namespace SensorDeviceMicroservice.API.Services
 {
     public class SensorService
     {
-        public const float DEFAULT_THRESHOLD = 1500;
-        public float Threshold { get; set; }
+        public const decimal DEFAULT_THRESHOLD = 0.1M;
+        public decimal Threshold { get; set; }
         public double Timeout { get; set; }
-        public bool IsThresholdSet { get; set; }
-        // public double Value { get; set; }
-        //public string SensorType { get; set; }
+        public decimal lastValue = 0;
+        public bool IsThresholdSet { get; set; } //cemu ovo sluzi
+ 
+
         public Data DataToProceed { get; set; }
 
-        public string _filePath;
 
         public string SensorType { get; set; }
 
@@ -25,6 +25,8 @@ namespace SensorDeviceMicroservice.API.Services
         private StreamReader _streamReader;
 
         private CsvReader _csv;
+
+        public string _filePath;
 
         private static bool _shouldTimerWork = false;
 
@@ -65,20 +67,19 @@ namespace SensorDeviceMicroservice.API.Services
             if (_shouldTimerWork)
             {
                 ReadValue();
-                //    DataToProceed.Id = 65465;
-
-                //    DataToProceed.City = "Bg";
-                //    DataToProceed.Site = "Site";
-                //    DataToProceed.ToDate = "21.04";
-                //    DataToProceed.FromDate = "20.07." ;
-                //    DataToProceed.SensorType = "co";
-                //    DataToProceed.Value = 330;
-
+                
                 Console.WriteLine(DataToProceed.SensorType);
-                Console.WriteLine(DataToProceed.Value);
-                HttpClient httpClient = new HttpClient();
-                var responseMessage = await httpClient.PostAsJsonAsync("http://datamicroservice.api:80/api/Data/AddData", DataToProceed);
-                //Console.WriteLine(responseMessage);
+                Console.WriteLine("Prethodna vrednost: " + lastValue + ", a nova vrednost: " + DataToProceed.Value);
+
+                if( (DataToProceed.Value > (lastValue + lastValue*Threshold)) || (DataToProceed.Value < (lastValue - lastValue * Threshold)) )
+                { //ako se nova vrednost promenila za threshold u odnosu na prethodnu vrednost onda se salje nova vrednost
+                    Console.WriteLine("Saljem novu vrednost: " + DataToProceed.Value);
+                    HttpClient httpClient = new HttpClient();
+                    var responseMessage = await httpClient.PostAsJsonAsync("http://datamicroservice.api:80/api/Data/AddData", DataToProceed);
+                    //Console.WriteLine(responseMessage);
+                }
+
+                lastValue = DataToProceed.Value;
             }
 
         }

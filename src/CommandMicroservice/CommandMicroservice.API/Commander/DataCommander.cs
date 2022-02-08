@@ -13,6 +13,13 @@ namespace CommandMicroservice.API.Commander
         private event EventHandler ServiceCreated;
         private CommandHub _hubContext;
 
+        private bool night= false;
+
+        public void isNight(bool n)
+        {
+            night = n;
+        }
+
         public DataCommander(Hivemq mqttService, CommandHub hubContext)
         {
             _hubContext = hubContext;
@@ -60,24 +67,37 @@ namespace CommandMicroservice.API.Commander
 
         public async Task CommandAsync(DataAnalytics receivedObject)
         {
-            Console.WriteLine("USO SAM U CommandAsync");
+            HttpClient httpClient = new HttpClient();
 
-            if (receivedObject.SensorType.ToLower() == "Pm10".ToLower())
-            { 
+            DateTime dt = DateTime.Now;
+            int hour = dt.Hour;
+            Console.WriteLine("HOURS: " + hour);
+            if (hour < 5)
+                night = true;
+
+            if (night)
+            {
+                var responseMessage = await httpClient.PostAsJsonAsync("http://sensordevicemicroservice.api:80/api/SensorDevice/StopSensor", receivedObject.SensorType);
+                Console.WriteLine("UGASEN SENZOR");
+                Console.WriteLine(responseMessage);
+
+                await _hubContext.SendWarning($"Sensor: {receivedObject.SensorType} is off!");
+
+                return;
+            }
+            else 
                 if (receivedObject.Risk == "green")
                 {
-                    Console.WriteLine("GREEN-ZOVE SENSOR");
-
-                    HttpClient httpClient = new HttpClient();
+                   // Console.WriteLine("GREEN-ZOVE SENSOR");
+                    var responseMessage = await httpClient.PostAsJsonAsync("http://sensordevicemicroservice.api:80/api/SensorDevice/SetTimeout/9000", receivedObject.SensorType);
+                    Console.WriteLine("POZVAN SENZOR");
+                    Console.WriteLine(responseMessage);
 
                     await _hubContext.SendWarning($"Sensor: {receivedObject.SensorType} has {receivedObject.Risk} zone!");
 
-                    var responseMessage = await httpClient.PostAsJsonAsync("http://sensordevicemicroservice.api:80/api/SensorDevice/StopSensor", receivedObject.SensorType);
-                    Console.WriteLine("POZVAN SENZOR");
-
-                    Console.WriteLine(responseMessage);
+                    
                 }
             }
-        }
+        
     }
 }
