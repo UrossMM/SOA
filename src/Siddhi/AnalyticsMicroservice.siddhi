@@ -1,0 +1,30 @@
+@App:name("AnalyticsMicroservice")
+
+@Source(type = 'http',
+        receiver.url='http://0.0.0.0:8006/AnalyticsMicroservice',
+        basic.auth.enabled='false',
+        @map(type='json'), @attributes(Id= "Id", SensorType = "SensorType", Value = "Value", Risk = "Risk"))
+define stream DataInputStream 
+(
+	Id int,
+    SensorType string,
+    Value decimal,
+    Risk bool
+);
+@sink(type='http', publisher.url='http://192.168.1.103:8002/api/Analytics/WriteToMongo',
+      method='POST', 
+      headers='Content-type:application/json',
+      basic.auth.enabled='false',
+      @map(type='json'))
+define stream OutputDataStream 
+(
+	Id int,
+    SensorType string,
+    Value decimal,
+    Risk bool
+);
+
+@info(name='YellowZone')
+from DataInputStream[SensorType=="co" and Value>2]
+select SensorType, Value, Risk
+insert into OutputDataStream;
