@@ -27,6 +27,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGw", "ApiGateway\OcelotApiGw\OcelotApiGw.csproj", "{1000EDE4-3C62-491A-81EF-3A42DFA7BF31}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fiverr", "Fiverr", "{02CC572C-3C7D-40AD-8B3C-D79C116C1B64}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Fiware.pdf = ..\..\Fiware.pdf
+		..\..\Fiware.pptx = ..\..\Fiware.pptx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
