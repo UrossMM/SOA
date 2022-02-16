@@ -1,8 +1,13 @@
-﻿namespace AnalyticsMicroservice.API.Entities
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace AnalyticsMicroservice.API.Entities
 {
     public class Data
     {
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string City { get; set; }
         public string SiteName { get; set; }
         public string Site { get; set; }

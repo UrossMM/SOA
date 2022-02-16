@@ -29,7 +29,7 @@ namespace AnalyticsMicroservice.API.Repository
         //    await _dbContext.AllData.DeleteManyAsync(p => true);
         //}
 
-        public async Task<IEnumerable<DataAnalytics>> GetDataById(int id)
+        public async Task<IEnumerable<DataAnalytics>> GetDataByRisk(string risk)
         {
             /*return await _dbContext
                         .AllData
@@ -38,7 +38,7 @@ namespace AnalyticsMicroservice.API.Repository
             var db = _client.GetDatabase("Analytics");
             var collection = db.GetCollection<DataAnalytics>("Data-Analytics");
 
-            return await collection.Find(x => x.Id == id).ToListAsync();
+            return await collection.Find(x => x.Risk == risk).ToListAsync();
         }
         public async Task<IEnumerable<DataAnalytics>> GetAllData()
         {

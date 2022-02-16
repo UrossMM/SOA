@@ -22,10 +22,10 @@ namespace AnalyticsMicroservice.API.Controllers
                 return Ok();
             }
 
-            [HttpGet("{id}")]
-            public async Task<ActionResult<DataAnalytics>> GetAnalyticsData(int id)
+            [HttpGet("{risk}")]
+            public async Task<ActionResult<DataAnalytics>> GetAnalyticsData(string risk)
             {
-                var data = await _repository.GetDataById(id);
+                var data = await _repository.GetDataByRisk(risk);
                 return Ok(data);
             }
 

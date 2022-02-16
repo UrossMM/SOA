@@ -98,7 +98,7 @@ namespace SensorDeviceMicroservice.API.Services
             try
             {
                 string sensor_value;
-                string id;
+                //string id;
                 string city;
                 string site;
                 string toDate;
@@ -107,7 +107,7 @@ namespace SensorDeviceMicroservice.API.Services
                 if (_csv.Read())
                 {
                     sensor_value = _csv.GetField<string>(DataToProceed.SensorType);
-                    id = _csv.GetField<string>("id");
+                   // id = _csv.GetField<string>("id");
                     city = _csv.GetField<string>("city");
                     site = _csv.GetField<string>("site");
                     toDate = _csv.GetField<string>("to_date");
@@ -124,13 +124,13 @@ namespace SensorDeviceMicroservice.API.Services
                     _csv.Read();
                     _csv.ReadHeader();
                     sensor_value = _csv.GetField<string>(DataToProceed.SensorType);
-                    id = _csv.GetField<string>("id");
+                   // id = _csv.GetField<string>("id");
                     city = _csv.GetField<string>("city");
                     site = _csv.GetField<string>("site");
                     toDate = _csv.GetField<string>("to_date");
                     fromDate = _csv.GetField<string>("from_date");
                 }
-                DataToProceed.Id = Int32.Parse(id);
+                DataToProceed.Id = "";
                 DataToProceed.City = city;
                 DataToProceed.Site = site;
                 DataToProceed.ToDate = toDate;

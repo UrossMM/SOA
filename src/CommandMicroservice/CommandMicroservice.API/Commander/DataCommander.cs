@@ -69,11 +69,11 @@ namespace CommandMicroservice.API.Commander
         {
             HttpClient httpClient = new HttpClient();
 
-            DateTime dt = DateTime.Now;
+            /*DateTime dt = DateTime.Now;
             int hour = dt.Hour;
             Console.WriteLine("HOURS: " + hour);
             if (hour < 5)
-                night = true;
+                night = true;*/
 
             if (night)
             {
@@ -85,7 +85,8 @@ namespace CommandMicroservice.API.Commander
 
                 return;
             }
-            else 
+            else
+            { 
                 if (receivedObject.Risk == "green")
                 {
                    // Console.WriteLine("GREEN-ZOVE SENSOR");
@@ -97,6 +98,15 @@ namespace CommandMicroservice.API.Commander
 
                     
                 }
+                else //yellow or red zone
+                {
+                    var responseMessage = await httpClient.PostAsJsonAsync("http://sensordevicemicroservice.api:80/api/SensorDevice/SetTimeout/4000", receivedObject.SensorType);
+                    Console.WriteLine("POZVAN SENZOR");
+                    Console.WriteLine(responseMessage);
+
+                    await _hubContext.SendWarning($"Sensor: {receivedObject.SensorType} has {receivedObject.Risk} zone!");
+                }
+            }
             }
         
     }

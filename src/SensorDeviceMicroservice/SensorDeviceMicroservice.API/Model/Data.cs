@@ -1,8 +1,13 @@
-﻿namespace SensorDeviceMicroservice.API.Model
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace SensorDeviceMicroservice.API.Model
 {
     public class Data
     {
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string City { get; set; }
         public string Site { get; set; }
         public string ToDate { get; set; }

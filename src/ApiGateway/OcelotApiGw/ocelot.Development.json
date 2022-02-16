@@ -74,6 +74,18 @@
       ],
       "UpstreamPathTemplate": "/Data/RemoveAllData",
       "UpstreamHttpMethod": [ "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Analytics/DeleteAllRecords",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "analyticsmicroservice.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Analytics/Delete",
+      "UpstreamHttpMethod": [ "DELETE" ]
     }
   ],
   "GlobalConfiguration": {

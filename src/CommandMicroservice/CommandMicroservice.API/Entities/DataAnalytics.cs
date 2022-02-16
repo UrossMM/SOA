@@ -1,9 +1,14 @@
-﻿namespace CommandMicroservice.API.Entities
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace CommandMicroservice.API.Entities
 {
         public class DataAnalytics
         {
-            public int Id { get; set; }
-            public string SensorType { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        public string SensorType { get; set; }
             public decimal Value { get; set; }
             public string Risk { get; set; }
 

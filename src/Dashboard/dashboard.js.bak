@@ -22,17 +22,18 @@ export class Dashboard
 
         var dash = this;
 
-        function createDiv(parentDiv, className, textContent)
-        {
-            var div = document.createElement("div");
-            field1.className = className;
-            field1.textContent = textContent;
-            parentDiv.appendChild(div);
-        }
+        var text = document.createElement("h2")
+        text.textContent = "Air Pol Delhi"
+        text.style.textAlign = "center"
+        parent.appendChild(text);
 
         this.container = document.createElement("div");
         this.container.className = "parameterDiv";
         parent.appendChild(this.container);
+
+        var div = document.createElement("div");
+        div.className = "header"
+        parent.appendChild(div)
 
         var form = document.createElement("div");
         form.className = "formDiv";
@@ -50,11 +51,11 @@ export class Dashboard
         input1.className = "deleteAllInput";
         div1.appendChild(input1);
         input1.onclick = function(){
-            fetch('https://localhost:8010/RemoveAllData', {
-                method: 'DELETE',
+            fetch('http://localhost:8010/Data/RemoveAllData', {
+                method: "DELETE",
+                headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}
                 })
-                .then(res => res.text())
-                .then(res => console.log(res))
+                .then(location.reload())
         }
 
         var div2 = document.createElement("div");
@@ -82,44 +83,6 @@ export class Dashboard
                 dash.drawElements(elements);
             }));
             
-        }
-
-        var div3 = document.createElement("div");
-        form.appendChild(div3);
-        var input3 = document.createElement("input");
-        input3.type = "button";        
-        input3.value = "Get special type";
-        input3.className = "getSpecialType";
-        div3.appendChild(input3);
-        var sel = document.createElement("select");
-        div3.appendChild(sel);
-        const array = ["temperature", "cloud", "pressure", "humidity", "rainfall", "windspeed"];
-        array.forEach(element => {
-            var op = document.createElement("option");
-            op.value = element;
-            op.text = element;
-            op.selected = "selected";
-            sel.add(op);
-        });
-        input3.onclick = function(){
-            dash.deleteAll();
-            console.log(sel.options[sel.selectedIndex].value);
-            fetch("https://localhost:1025/api/Gateway/GetAllTypedSensorData?typeOfSensor="+sel.options[sel.selectedIndex].value, {
-                method: "GET",
-                                
-                headers: {
-                    "Accept": "*/*",
-                    "Connection":"keep-alive"
-                  }
-            }).then(p => p.json().then(data => {
-                data.forEach(d => {
-                    const newData = new Data(d["id"], d["value"], d["city"], d["sensorType"]);
-                    dash.addData(newData);
-                });
-                dash.drawElements(elements);
-            }))
-            .catch(error => console.log(error) );
-
         }
 
         this.drawElements(elements);

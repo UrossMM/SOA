@@ -56,6 +56,12 @@ export class Dashboard
                 headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}
                 })
                 .then(location.reload())
+				
+		    fetch('http://localhost:8010/Analytics/Delete', {
+                method: "DELETE",
+                headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}
+                })
+                .then(location.reload())
         }
 
         var div2 = document.createElement("div");
